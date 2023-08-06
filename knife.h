@@ -15,8 +15,7 @@ public:
     int id;
 
 private:
-    QMutex *putBackMutex;
-    QMutex *takeMutex;
+    QMutex *mutex;
     bool inUse;
 };
 

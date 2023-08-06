@@ -15,10 +15,21 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     knight.cpp \
-    knife.cpp
+    knife.cpp \
+    knightsdata.cpp \
+    GraphicScene/knightanimation.cpp \
+    GraphicScene/animationpool.cpp \
+    GraphicScene/scene.cpp
 
 HEADERS  += mainwindow.h \
     knight.h \
-    knife.h
+    knife.h \
+    knightsdata.h \
+    GraphicScene/knightanimation.h \
+    GraphicScene/animationpool.h \
+    GraphicScene/scene.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    spritesheets.qrc

@@ -5,8 +5,7 @@ Knight::Knight(int knightID, QString knightName)
     id = knightID;
     name = knightName;
 
-    hungerLevelPercent = 100;
-    condition = Idle;
+    hungerLevelPercent = 100; // Стартовый уровень голода
     isHungry = false;
     isSimulationAllowed = false;
     isEatingAllowed = true; //TODO вернуть false после тестов
@@ -22,14 +21,14 @@ QString Knight::getName() const
     return name;
 }
 
-void Knight::setLeftKnife(Knife *value)
+void Knight::setLeftKnife(Knife *knife)
 {
-    leftKnife = value;
+    leftKnife = knife;
 }
 
-void Knight::setRightKnife(Knife *value)
+void Knight::setRightKnife(Knife *knife)
 {
-    rightKnife = value;
+    rightKnife = knife;
 }
 
 Knight::Condition Knight::getCondition() const
@@ -42,11 +41,24 @@ int Knight::getHungerLevel() const
     return hungerLevelPercent;
 }
 
+void Knight::setIsSimulationAllowed(bool value)
+{
+    isSimulationAllowed = value;
+}
+
+void Knight::setIsEatingAllowed(bool value)
+{
+    isEatingAllowed = value;
+}
+
 void Knight::run()
 {    
     while (true) {
         if(!isSimulationAllowed){
-            condition = Idle;
+            if(condition != Idle){
+                condition = Idle;
+                emit stateChanged(id, hungerLevelPercent, condition);
+            }
             continue;
         }
 
@@ -56,29 +68,46 @@ void Knight::run()
             isHungry = false;
 
         if(isEatingAllowed && isHungry){
-            if(leftKnife->tryToTake()){
-                emit stateChanged(QString(name + " take left knife"));
-                if(rightKnife->tryToTake()){
-                    emit stateChanged(QString(name + " take right knife"));
-                    while(hungerLevelPercent > 0 && isSimulationAllowed){
+            if(leftKnife->tryToTake()){ // Пытаемся взять левый нож
+                condition = LeftKnifeTaking;
+                emit stateChanged(id, hungerLevelPercent, condition);
+                usleep(1000000 * knifeTakingTimeSecs);
+                if(rightKnife->tryToTake()){ // Левый нож взяли, пытаемся взять правый
+                    condition = RightKnifeTaking;
+                    emit stateChanged(id, hungerLevelPercent, condition);
+                    usleep(1000000 * knifeTakingTimeSecs);
+                    // Едим пока не наедимся, запущена симуляция и алгоритм разрешает
+                    while(hungerLevelPercent > 0 && isSimulationAllowed && isEatingAllowed){
                         condition = Eating;
-                        emit stateChanged(QString(name + " eating"));
-                        hungerLevelPercent -= 10;
-
+                        updateHungerLevel();
+                        emit stateChanged(id, hungerLevelPercent, condition);
                         usleep(1000000 * updateTimeSecs);
                     }
+                    // Прекратили прием пищи, ложим ножи на место
                     leftKnife->putBack();
                     rightKnife->putBack();
                     continue;
                 }else{
-                    leftKnife->putBack();
+                    leftKnife->putBack(); // Не получилось взять правый нож, ложим левый на место
                 }
             }
         }
-        emit stateChanged(QString(name + " telling story"));
         condition = StoryTelling;
-        hungerLevelPercent += 5;
-        if(hungerLevelPercent > 100) hungerLevelPercent = 100;
+        updateHungerLevel();
+        emit stateChanged(id, hungerLevelPercent, condition);
         usleep(1000000 * updateTimeSecs);
+    }
+}
+
+void Knight::updateHungerLevel()
+{
+    if(condition == Eating){
+        hungerLevelPercent -= hungerDecreaseSpeed;
+        if(hungerLevelPercent < 0) hungerLevelPercent = 0;
+        return;
+    }
+    if(condition == StoryTelling){
+        hungerLevelPercent += hungerIncreaseSpeed;
+        if(hungerLevelPercent > 100) hungerLevelPercent = 100;
     }
 }

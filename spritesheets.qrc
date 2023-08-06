@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>SpriteSheets/attack.png</file>
+        <file>SpriteSheets/idle.png</file>
+        <file>SpriteSheets/table.png</file>
+        <file>SpriteSheets/plate.png</file>
+        <file>SpriteSheets/knife.png</file>
+    </qresource>
+</RCC>

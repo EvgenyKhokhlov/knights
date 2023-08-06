@@ -2,27 +2,26 @@
 
 Knife::Knife()
 {
-    putBackMutex = new QMutex;
-    takeMutex = new QMutex;
+    mutex = new QMutex;
     putBack();
 }
 
 void Knife::putBack()
 {
-    putBackMutex->lock();
+    mutex->lock();
     inUse = false;
-    putBackMutex->unlock();
+    mutex->unlock();
 }
 
 bool Knife::tryToTake()
 {
-    if(takeMutex->tryLock()){
+    if(mutex->tryLock()){
         if(!inUse){
             inUse = true;
-            takeMutex->unlock();
+            mutex->unlock();
             return true;
         }
-        takeMutex->unlock();
+        mutex->unlock();
     }
     return false;
 }
