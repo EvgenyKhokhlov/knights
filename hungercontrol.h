@@ -2,22 +2,30 @@
 #define HUNGERCONTROL_H
 
 #include <QObject>
+#include <QTimer>
+#include <QVector>
 
 class HungerControl : public QObject
 {
     Q_OBJECT
 public:
-    explicit HungerControl(QVector<int> *hungerLevel, QVector<int> *knightsCondition, QObject *parent = 0);
+    explicit HungerControl(QVector<int> *hungerLevel, QObject *parent = 0);
+
+    void startSimulation();
+    void stopSimulation();
 
 signals:
-
-public slots:
+    void isEatingAllowed(int knightID, bool value);
 
 private:
     QVector<int> *hunger;
-    QVector<int> *condition;
+    QTimer *timer;
 
-    int operateTimeSecs;
+    static const int operateTimeSecs = 2;
+    static const int hungerLevelDifference = 40;
+
+    int nextID(int id);
+    int prevID(int id);
 
 private slots:
     void controlHunger();

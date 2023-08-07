@@ -32,7 +32,7 @@ public:
 
 public slots:
     void setIsSimulationAllowed(bool value);
-    void setIsEatingAllowed(bool value);
+    void setIsEatingAllowed(int knightID, bool value);
 
 private:
     int id;
@@ -47,8 +47,9 @@ private:
 
     static const int updateTimeSecs = 2; // Время одного цикла приема пищи/рассказа истории
     static const int knifeTakingTimeSecs = updateTimeSecs / 2; // Допустим время на взятие ножа в 2 раза меньше времени цикла
-    static const int hungerIncreaseSpeed = 5; // Скорость учеличения чувства голода при рассказе истории за цикл
+    static const int hungerIncreaseSpeed = 5; // Скорость увеличения чувства голода при рассказе истории за цикл
     static const int hungerDecreaseSpeed = 10; // Скорость насыщения за цикл
+    static const int minHungerLevel = 20; // Минимальный уровень при котором рыцарь чувствует голод
 
     void run();
     void updateHungerLevel();

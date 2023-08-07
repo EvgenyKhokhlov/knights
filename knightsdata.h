@@ -12,7 +12,7 @@ public:
     explicit KnightsData(QObject *parent = 0);
 
     QVector<QString> getNames() const;
-    QVector<int> getHunger() const;
+    QVector<int>* getHunger();
     QVector<int> getCondition() const;
     QVector<int> getMealsNumber() const;
     QVector<int> getStoriesToldNumber() const;

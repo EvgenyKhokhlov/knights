@@ -7,6 +7,7 @@
 #include <QTimer>
 
 #include "knightsdata.h"
+#include "hungercontrol.h"
 #include "GraphicScene/scene.h"
 
 namespace Ui {
@@ -34,6 +35,7 @@ signals:
 private:
     Ui::MainWindow *ui;
     KnightsData *knightsData;
+    HungerControl *hungerControl;
     Scene *scene;
     QVector<Knight *> knights;
     QTimer *buttonEnableTimer;
@@ -43,7 +45,7 @@ private:
     void updateKnifeCondition(bool isInHand, int id, int tableColumn);
 
     static const double updateTimeSecs = 0.5;
-    static const double buttonDisabledDelaySecs = 2;
+    static const double buttonDisabledDelaySecs = 3;
 };
 
 #endif // MAINWINDOW_H

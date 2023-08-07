@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QGraphicsScene>
+#include <QDebug>
+#include <math.h>
 
 #include "GraphicScene/knightanimation.h"
 #include "GraphicScene/animationpool.h"
@@ -41,7 +43,7 @@ private:
     QVector<QGraphicsPixmapItem*> knifes;
     QVector<int> knightsState;
 
-    bool isSimaltionEnabled;
+    bool isSimulationEnabled;
 
     int nextID(int id);
     int prevID(int id);

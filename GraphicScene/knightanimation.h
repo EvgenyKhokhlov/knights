@@ -4,6 +4,8 @@
 #include <QGraphicsPixmapItem>
 #include <QPropertyAnimation>
 #include <QObject>
+#include <QDebug>
+#include "GraphicScene/animationpool.h"
 
 class KnightAnimation : public QObject, public QGraphicsPixmapItem
 {

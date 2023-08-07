@@ -1,6 +1,5 @@
 #include "knightanimation.h"
-#include "GraphicScene/animationpool.h"
-#include <QDebug>
+
 
 KnightAnimation::KnightAnimation(QObject *parent) : QObject(parent), QGraphicsPixmapItem()
 {           

@@ -8,7 +8,7 @@ Knight::Knight(int knightID, QString knightName)
     hungerLevelPercent = 100; // Стартовый уровень голода
     isHungry = false;
     isSimulationAllowed = false;
-    isEatingAllowed = true; //TODO вернуть false после тестов
+    isEatingAllowed = true; // Изначально всем рыцарям разрешен прием пищи
 }
 
 int Knight::getId() const
@@ -46,8 +46,10 @@ void Knight::setIsSimulationAllowed(bool value)
     isSimulationAllowed = value;
 }
 
-void Knight::setIsEatingAllowed(bool value)
+void Knight::setIsEatingAllowed(int knightID, bool value)
 {
+    if(knightID != id) return;
+
     isEatingAllowed = value;
 }
 
@@ -62,7 +64,7 @@ void Knight::run()
             continue;
         }
 
-        if(hungerLevelPercent > 20)
+        if(hungerLevelPercent > minHungerLevel)
             isHungry = true;
         else
             isHungry = false;

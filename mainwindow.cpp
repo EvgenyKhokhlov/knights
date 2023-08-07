@@ -11,12 +11,16 @@ MainWindow::MainWindow(QWidget *parent) :
     knightsData = new KnightsData;
     connect(knightsData, SIGNAL(knightState(int, int)), this, SLOT(knightStateChanged(int, int)));
 
+    //Создаем контроллер голода рыцарей и передаем ссылку на контейнер с данными голода
+    hungerControl = new HungerControl(knightsData->getHunger());
+
     // Создаем рыцарей и расставляем ножи
     Knife *knifeForLastKnight;
     for(int i = 0; i < knightsData->getKnightsCount(); i++){
         Knight* knight = new Knight(i, knightsData->getNames().at(i));
         connect(knight, SIGNAL(stateChanged(int, int, int)), knightsData, SLOT(knightStateChanged(int, int, int)));
-        connect(this, SIGNAL(setSimulation(bool)), knight, SLOT(setIsSimulationAllowed(bool))); //TODO перенести в алгоритм
+        connect(this, SIGNAL(setSimulation(bool)), knight, SLOT(setIsSimulationAllowed(bool)));
+        connect(hungerControl, SIGNAL(isEatingAllowed(int, bool)), knight, SLOT(setIsEatingAllowed(int, bool)));
         knights.append(knight);
 
         Knife *knife = new Knife;
@@ -65,6 +69,7 @@ void MainWindow::on_startButton_clicked()
 {
     emit setSimulation(true);
     scene->startSimulation();
+    hungerControl->startSimulation();
 
     isStartButtonEnableRequired = false;
     ui->startButton->setEnabled(false);
@@ -75,6 +80,7 @@ void MainWindow::on_stopButton_clicked()
 {
     emit setSimulation(false);
     scene->stopSimulation();
+    hungerControl->stopSimulation();
 
     isStartButtonEnableRequired = true;
     ui->stopButton->setEnabled(false);
@@ -93,7 +99,7 @@ void MainWindow::updateTableData()
         if(condition == 4) state = "Idle";
 
         ui->tableWidget->setItem(i, 2, new QTableWidgetItem(state));
-        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QString::number(knightsData->getHunger().at(i))));
+        ui->tableWidget->setItem(i, 3, new QTableWidgetItem(QString::number(knightsData->getHunger()->at(i))));
 
         updateKnifeCondition(knightsData->getLeftKnifeInHand().at(i), i, 4);
         updateKnifeCondition(knightsData->getRightKnifeInHand().at(i), i, 5);

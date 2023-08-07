@@ -21,9 +21,9 @@ QVector<QString> KnightsData::getNames() const
     return knightsNames;
 }
 
-QVector<int> KnightsData::getHunger() const
+QVector<int> *KnightsData::getHunger()
 {
-    return knightsHunger;
+    return &knightsHunger;
 }
 
 QVector<int> KnightsData::getCondition() const

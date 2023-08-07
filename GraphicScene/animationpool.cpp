@@ -1,5 +1,4 @@
 #include "animationpool.h"
-#include <QDebug>
 
 QMap<int, QVector<QPixmap*> > AnimationPool::animations;
 

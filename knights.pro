@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     knightsdata.cpp \
     GraphicScene/knightanimation.cpp \
     GraphicScene/animationpool.cpp \
-    GraphicScene/scene.cpp
+    GraphicScene/scene.cpp \
+    hungercontrol.cpp
 
 HEADERS  += mainwindow.h \
     knight.h \
@@ -27,7 +28,8 @@ HEADERS  += mainwindow.h \
     knightsdata.h \
     GraphicScene/knightanimation.h \
     GraphicScene/animationpool.h \
-    GraphicScene/scene.h
+    GraphicScene/scene.h \
+    hungercontrol.h
 
 FORMS    += mainwindow.ui
 

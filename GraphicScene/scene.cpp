@@ -1,8 +1,5 @@
 #include "scene.h"
 
-#include <QDebug>
-#include <math.h>
-
 Scene::Scene(int x, int y, int width, int height, QVector<QString> knightsName, QObject *parent) : QGraphicsScene(parent)
 {
     setSceneRect(x, y, width - 2, height - 2);
@@ -61,7 +58,7 @@ Scene::Scene(int x, int y, int width, int height, QVector<QString> knightsName, 
 
 void Scene::startSimulation()
 {
-    isSimaltionEnabled = true;
+    isSimulationEnabled = true;
     for(int i = 0; i < knights.count(); i++){
         knights.at(i)->startAnimation();
     }
@@ -69,7 +66,7 @@ void Scene::startSimulation()
 
 void Scene::stopSimulation()
 {
-    isSimaltionEnabled = false;
+    isSimulationEnabled = false;
     for(int i = 0; i < knights.count(); i++){
         knights.at(i)->stopAnimation();
         knifes.at(i)->show();
@@ -78,11 +75,14 @@ void Scene::stopSimulation()
 
 void Scene::knightStateChanged(int id, int state)
 {
-    if(knightsState.at(id) == state || !isSimaltionEnabled) return; // если состояние не поменялось - ничего не делаем
-    knightsState[id] = state;
+    if(knightsState.at(id) == state) return; // если состояние не поменялось - ничего не делаем
 
+    knightsState[id] = state;
     knights.at(id)->changeAnimation(state);
 
+    if(!isSimulationEnabled) return;
+    // В зависимости от состояния показываем/скрываем ножи
+    // TODO добавить задержку по времени для  синхронизации с анимацией
     if(state == 1){
         if(knightsState.at(prevID(id)) == 1)
             knifes.at(id)->show();
