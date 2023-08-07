@@ -58,7 +58,7 @@ int KnightsData::getKnightsCount() const
 
 void KnightsData::knightStateChanged(int id, int hunger, int condition)
 {
-    if(condition != 4)
+    if(condition != 4 && knightsCondition.at(id) != condition)
         emit knightState(id, condition);
 
     // Обновляем данные голода
